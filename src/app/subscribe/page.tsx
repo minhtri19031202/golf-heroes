@@ -36,7 +36,8 @@ export default function SubscribePage() {
         throw new Error('Stripe.js has not loaded yet.');
       }
 
-
+      // 3. Chuyển hướng đến trang thanh toán của Stripe
+      // Ép kiểu any để tránh lỗi TypeScript khắt khe với phiên bản mới
       await (stripe as any).redirectToCheckout({
         sessionId: sessionId,
       });
@@ -79,7 +80,8 @@ export default function SubscribePage() {
             </li>
           </ul>
           <button
-            onClick={() => handleSubscribe('price_1Qxyz...YOUR_MONTHLY_PRICE_ID', 'Monthly')}
+            // ĐÃ CẬP NHẬT PRICE ID THẬT CHO GÓI MONTHLY
+            onClick={() => handleSubscribe('price_1TOwE9FS0pNG7D9rRRUyG0Zt', 'Monthly')}
             disabled={loading === 'Monthly'}
             className="w-full py-3 px-4 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 disabled:opacity-50 transition-colors"
           >
@@ -110,7 +112,8 @@ export default function SubscribePage() {
             </li>
           </ul>
           <button
-            onClick={() => handleSubscribe('price_1Qabc...YOUR_YEARLY_PRICE_ID', 'Yearly')}
+            // ĐÃ CẬP NHẬT PRICE ID THẬT CHO GÓI YEARLY
+            onClick={() => handleSubscribe('price_1TOwFMFS0pNG7D9rJF5I9xSQ', 'Yearly')}
             disabled={loading === 'Yearly'}
             className="w-full py-3 px-4 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 disabled:opacity-50 transition-colors"
           >
