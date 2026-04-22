@@ -63,7 +63,7 @@ export async function middleware(request: NextRequest) {
       .single()
     
     if (profile?.subscription_status !== 'active') {
-      return NextResponse.redirect(new URL('/subscribe', request.url))
+      return NextResponse.redirect(new URL('/dashboard', request.url))
     }
   }
 
