@@ -2,11 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
 import { useRouter } from 'next/navigation';
-
-// Khởi tạo Stripe Promise
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 export default function SubscribePage() {
   const [loading, setLoading] = useState<string | null>(null);
@@ -27,20 +23,14 @@ export default function SubscribePage() {
       }
 
       const data = await response.json();
-      const sessionId = data.sessionId;
+      const { url } = data; // API sẽ trả về full URL thay vì chỉ sessionId
 
-      // 2. Lấy instance của Stripe
-      const stripe = await stripePromise;
-
-      if (!stripe) {
-        throw new Error('Stripe.js has not loaded yet.');
+      // 2. Redirect trực tiếp đến trang Checkout của Stripe
+      if (url) {
+        window.location.href = url;
+      } else {
+        throw new Error('No checkout URL returned');
       }
-
-      // 3. Chuyển hướng đến trang thanh toán của Stripe
-      // Ép kiểu any để tránh lỗi TypeScript khắt khe với phiên bản mới
-      await (stripe as any).redirectToCheckout({
-        sessionId: sessionId,
-      });
       
     } catch (error) {
       console.error('Subscription Error:', error);
@@ -80,7 +70,6 @@ export default function SubscribePage() {
             </li>
           </ul>
           <button
-            // ĐÃ CẬP NHẬT PRICE ID THẬT CHO GÓI MONTHLY
             onClick={() => handleSubscribe('price_1TOwE9FS0pNG7D9rRRUyG0Zt', 'Monthly')}
             disabled={loading === 'Monthly'}
             className="w-full py-3 px-4 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 disabled:opacity-50 transition-colors"
@@ -112,7 +101,6 @@ export default function SubscribePage() {
             </li>
           </ul>
           <button
-            // ĐÃ CẬP NHẬT PRICE ID THẬT CHO GÓI YEARLY
             onClick={() => handleSubscribe('price_1TOwFMFS0pNG7D9rJF5I9xSQ', 'Yearly')}
             disabled={loading === 'Yearly'}
             className="w-full py-3 px-4 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 disabled:opacity-50 transition-colors"
